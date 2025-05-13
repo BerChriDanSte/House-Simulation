@@ -1,3 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using HouseSimulation.Models;
 
-Console.WriteLine("Hello, World!");
+namespace HouseSimulation;
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        var game = new Game();
+        game.Start();
+    }
+}
