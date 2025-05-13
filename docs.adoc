@@ -1,0 +1,106 @@
+= Memory Maze: An Item Hunt
+Author: spooky_forg 
+Level: A-Level Computer Science Project
+Version: 1.0
+
+== 🎮 Game Overview
+
+"Memory Maze" is a narrative-rich, console-based simulation inspired by real events. The game blends item-based exploration with abstract storytelling inside the symbolic “mind maze” of an unnamed character.
+
+The player must navigate a series of metaphorical rooms, collecting “Truth Fragments” that represent critical elements of identity: trauma, community, faith, addiction, and legacy.
+
+== 🧠 Objective
+
+Collect all 5 Truth Fragments and return them to the Conscience Room before being consumed by urself (the game's time-based failure state).
+
+* Win Condition: All 5 fragments are collected and placed in the final room.
+* Lose Condition: 40 turns pass before the fragments are returned.
+
+== 🧱 Core Gameplay Structure
+
+=== World Design
+
+Rooms are metaphorical spaces based on real places:
+
+- The Liquor Store
+- The Trap House
+- The Church
+- The Child's Room
+- The Conscience Room (Final deposit room)
+
+=== Items
+
+Items are narrative-rich collectibles tied to a theme:
+
+[cols="2,1"]
+|===
+| Name                        | Theme
+| Grandma's Tape Recorder     | Family / grounding voice
+| Blood-Stained T-Shirt       | Violence / survivor's guilt
+| Bible with Notes            | Faith / self-reflection
+| Polaroid                    | Memory / community
+|===
+
+=== Game States
+
+* `Playing`: Game is active.
+* `Enlightened`: All fragments collected and returned.
+* `Consumed`: Player ran out of time.
+
+== ⚙️ Technical Breakdown
+
+=== Object-Oriented Design
+
+The game uses OOP principles:
+- **Inheritance**: Item base class → TruthFragment, KeyItem, FlashbackToken
+- **Encapsulation**: Private state with public methods (e.g., `Inventory.AddItem()`)
+- **Polymorphism**: Different item types with custom behavior (`Use()` method)
+
+=== Game Loop
+
+- Accept player input (move, take, use)
+- Update turn counter
+- Trigger narrative events
+- Check win/lose conditions
+
+== 💬 Creative Features
+
+* **Narrative Echoes**: Collecting fragments triggers a ghostly voice or fragment
+* **Locked Rooms**: Some rooms are inaccessible without specific truths
+* **Flashbacks**: Optional items show past trauma or turning points
+* **Conscience Room**: Ending is a reflective message summarizing the choices made
+
+== 🎨 Sample Narrative Snippet
+
+_You pick up the Polaroid. A grainy smile stares back at you. The ghost whispers:_  
+*"This is where you started. Don't forget who you were."*
+
+== 📦 Future Enhancements (Optional)
+
+- NPC ghosts that speak lyrics when given certain items
+- A visual minimap (ASCII art)
+- Alternate endings depending on item order
+- Randomized relic placement per playthrough
+
+== 📁 File Structure
+
+[source]
+----
+/MemoryMaze
+├── /Models
+│   ├── Game.cs
+│   ├── Character.cs
+│   ├── Inventory.cs
+│   ├── Item.cs
+│   ├── TruthFragment.cs
+│   ├── FlashbackToken.cs
+│   ├── Room.cs
+│   ├── Connection.cs
+│   └── GameState.cs
+├── Program.cs
+└── docs.adoc
+----
+
+== 📍 Summary
+
+"Memory Maze" is a creative, narrative-driven interpretation of a spatial simulation project, transforming a basic item hunt into an exploration of identity, trauma, and reflection. Inspired by many things including real life events and stories, it aims to blend gameplay with emotional storytelling while demonstrating strong technical OOP design.
