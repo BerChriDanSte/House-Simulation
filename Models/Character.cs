@@ -5,6 +5,8 @@ public class Character
     public Room CurrentRoom { get; set; }
     public Inventory Inventory { get; private set; } = new();
     public InterludeManager? InterludeManager { get; set; }
+
+    private string? LastDirectionCameFrom { get; set; }
     public IntrusiveThoughtsManager? IntrusiveThoughtsManager { get; private set; }
     private readonly Action? _onWin;
     private List<Room> VisitedRooms { get; set; } = [];
@@ -22,10 +24,7 @@ public class Character
         VisitedRooms.Add(startRoom);
     }
 
-    public void WinGame()
-    {
-        _onWin?.Invoke();
-    }
+    public void WinGame() => _onWin?.Invoke();
 
     public void Move(string direction)
     {
@@ -33,6 +32,18 @@ public class Character
         if (connection == null)
         {
             Console.WriteLine("You can't go that way.");
+            return;
+        }
+
+        var isDark = CurrentRoom.IsDark && !Inventory.HasItem("Flashlight");
+
+        if (isDark && !string.Equals(direction, LastDirectionCameFrom, StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("It's too dark to find your way. You can only go back the way you came.");
+            if (!string.IsNullOrEmpty(LastDirectionCameFrom))
+            {
+                Console.WriteLine($"You think you came from the {LastDirectionCameFrom}.");
+            }
             return;
         }
 
@@ -51,9 +62,14 @@ public class Character
             }
         }
 
+        // update LastDirectionCameFrom BEFORE changing CurrentRoom
+        LastDirectionCameFrom = GetOppositeDirection(direction);
+
         CurrentRoom = connection.Destination;
         if (!VisitedRooms.Contains(CurrentRoom))
-            VisitedRooms.Add(CurrentRoom);
+        {
+            VisitedRooms.Add(CurrentRoom);   
+        }
 
         Console.WriteLine($"\n== {CurrentRoom.Name} ==");
         CurrentRoom.Describe(this);
@@ -104,8 +120,20 @@ public class Character
     public bool HasItem(string itemName) =>
         Inventory.HasItem(itemName);
 
-    public bool CanSee()
+    public bool CanSee() =>
+        !CurrentRoom.IsDark || Inventory.HasItem("Flashlight");
+
+    private string GetOppositeDirection(string direction)
     {
-        return !CurrentRoom.IsDark || Inventory.HasItem("Flashlight");
+        return direction.ToLower() switch
+        {
+            "north" => "south",
+            "south" => "north",
+            "east" => "west",
+            "west" => "east",
+            "up" => "down",
+            "down" => "up",
+            _ => direction
+        };
     }
 }

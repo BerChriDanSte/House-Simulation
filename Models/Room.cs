@@ -37,7 +37,7 @@ public class Room
             return;
         }
 
-        if (_items.Any())
+        if (_items.Count != 0)
         {
             Console.WriteLine("You see:");
             foreach (var item in _items)
@@ -71,7 +71,9 @@ public class Room
             i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
 
         if (item != null)
-            _items.Remove(item);
+        {
+            _items.Remove(item);   
+        }
 
         return item;
     }

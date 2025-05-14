@@ -15,19 +15,39 @@ public class IntrusiveThoughtsManager
     ];
 
     private readonly Random _random = new();
+
     public IntrusiveThoughtEffect CurrentEffect { get; private set; } = IntrusiveThoughtEffect.None;
+    private int _effectTurnsRemaining = 0;
 
     public void TriggerIntrusiveThoughts(int turnCount)
     {
+        if (CurrentEffect != IntrusiveThoughtEffect.None)
+        {
+            return;
+        }
+
         if (turnCount % 5 == 0)
         {
             var thought = Thoughts[_random.Next(Thoughts.Count)];
-            CurrentEffect = thought.Effect;
             DisplayIntrusiveThought(thought.Text);
+            CurrentEffect = thought.Effect;
+
+            if (CurrentEffect != IntrusiveThoughtEffect.None)
+            {
+                _effectTurnsRemaining = 1;
+            }
         }
-        else
+    }
+    
+    public void TickEffect()
+    {
+        if (_effectTurnsRemaining > 0)
         {
-            CurrentEffect = IntrusiveThoughtEffect.None;
+            _effectTurnsRemaining--;
+            if (_effectTurnsRemaining == 0)
+            {
+                CurrentEffect = IntrusiveThoughtEffect.None;
+            }
         }
     }
 
